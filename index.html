@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>薬管理サイト</title>
+
+<style>
+
+body{
+font-family: sans-serif;
+padding: 15px;
+background: #f5f5f5;
+}
+
+h1{
+text-align: center;
+}
+
+input{
+width: 100%;
+padding: 10px;
+margin-top: 10px;
+box-sizing: border-box;
+font-size: 16px;
+}
+
+button{
+width: 100%;
+padding: 10px;
+margin-top: 10px;
+font-size: 16px;
+}
+
+table{
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+background: white;
+}
+
+th, td{
+border: 1px solid #ccc;
+padding: 8px;
+word-break: break-word;
+}
+
+th{
+background: #e0e0e0;
+}
+
+.deleteBtn{
+background: red;
+color: white;
+border: none;
+padding: 5px 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<script>
+    const password = "1511";
+
+    const input = prompt("パスワードを入力(スマホのパスワード)");
+    if(input !== passwoord){
+        alert("パスワードが違います");
+        location.href = "https://google.com";
+    }
+
+    </script>
+
+<h1>薬管理サイト</h1>
+
+<input type="text" id="medicineName" placeholder="薬の名前">
+
+<input type="text" id="medicineEffect" placeholder="効果、頻度">
+
+<button onclick="addMedicine()">追加</button>
+
+<input type="text"
+id="searchBox"
+placeholder="検索"
+onkeyup="searchMedicine()">
+
+<table id="medicineTable">
+
+<thead>
+<tr>
+<th>薬名</th>
+<th>効果</th>
+<th>削除</th>
+</tr>
+</thead>
+
+<tbody>
+</tbody>
+
+</table>
+
+<script>
+
+let medicines = [];
+
+window.onload = function(){
+const savedData = localStorage.getItem("medicines");
+
+if(savedData){
+medicines = JSON.parse(savedData);
+displayMedicines();
+}
+};
+
+function addMedicine(){
+
+const name = document.getElementById("medicineName").value;
+const effect = document.getElementById("medicineEffect").value;
+
+if(name === "" || effect === ""){
+alert("入力してください");
+return;
+}
+
+medicines.push({
+name: name,
+effect: effect
+});
+
+saveData();
+
+displayMedicines();
+
+document.getElementById("medicineName").value = "";
+document.getElementById("medicineEffect").value = "";
+}
+
+function displayMedicines(){
+
+const tbody = document.querySelector("#medicineTable tbody");
+
+tbody.innerHTML = "";
+
+medicines.forEach((medicine, index) => {
+
+const row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${medicine.name}</td>
+<td>${medicine.effect}</td>
+<td>
+<button class="deleteBtn"
+onclick="deleteMedicine(${index})">
+削除
+</button>
+</td>
+`;
+
+tbody.appendChild(row);
+
+});
+}
+
+function deleteMedicine(index){
+
+const result = confirm("本当に削除しますか？");
+
+if(result){
+
+medicines.splice(index, 1);
+
+saveData();
+
+displayMedicines();
+}
+}
+
+function saveData(){
+localStorage.setItem("medicines",
+JSON.stringify(medicines));
+}
+
+function searchMedicine(){
+
+const keyword =
+document.getElementById("searchBox")
+.value
+.toLowerCase();
+
+const rows =
+document.querySelectorAll("#medicineTable tbody tr");
+
+rows.forEach(row => {
+
+const name =
+row.cells[0].textContent.toLowerCase();
+
+const effect =
+row.cells[1].textContent.toLowerCase();
+
+if(name.includes(keyword)
+|| effect.includes(keyword)){
+
+row.style.display = "";
+
+}else{
+
+row.style.display = "none";
+
+}
+
+});
+}
+
+</script>
+
+</body>
+</html>
