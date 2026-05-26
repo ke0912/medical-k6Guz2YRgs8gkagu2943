@@ -135,13 +135,16 @@ const password = "1511";
 let input =
 prompt("パスワードを入力");
 
-if(input !== null){
+input = input.replace(
+/[０-９]/g,
+function(s){
 
-input = input
-.normalize("NFKC")
-.trim();
+return String.fromCharCode(
+s.charCodeAt(0) - 65248
+);
 
 }
+);
 
 if(input !== password){
 
@@ -151,6 +154,7 @@ location.href =
 "https://google.com";
 
 }
+
 
 
 
