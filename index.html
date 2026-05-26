@@ -132,20 +132,19 @@ let medicines = [];
 
 const password = "1511";
 
-let input = prompt(
-"パスワードを入力"
+let input =
+prompt("パスワードを入力");
+
+input = input.replace(
+/[０-９]/g,
+function(s){
+
+return String.fromCharCode(
+s.charCodeAt(0) - 65248
 );
 
-if(input === null){
-
-location.href =
-"https://google.com";
-
-}else{
-
-input = input
-.normalize("NFKC")
-.trim();
+}
+);
 
 if(input !== password){
 
@@ -156,7 +155,6 @@ location.href =
 
 }
 
-}
 
 
 
