@@ -59,6 +59,21 @@ border: none;
 padding: 5px 10px;
 }
 
+#suggestions{
+background: white;
+border: 1px solid #ccc;
+}
+
+.suggestionItem{
+padding: 8px;
+cursor: pointer;
+border-bottom: 1px solid #eee;
+}
+
+.suggestionItem:hover{
+background: #f0f0f0;
+}
+
 </style>
 </head>
 
@@ -84,7 +99,6 @@ placeholder="検索"
 onkeyup="searchMedicine()">
 
 <div id="suggestions"></div>
-
 <table id="medicineTable">
 
 <thead>
