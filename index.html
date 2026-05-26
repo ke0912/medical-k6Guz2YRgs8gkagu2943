@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>薬管理サイト</title>
 
@@ -62,24 +64,19 @@ padding: 5px 10px;
 
 <body>
 
-<script>
-    const password = "1511";
-
-    const input = prompt("パスワードを入力(スマホのパスワード)");
-    if(input !== password){
-        alert("パスワードが違います");
-        location.href = "https://google.com";
-    }
-
-    </script>
-
 <h1>薬管理サイト</h1>
 
-<input type="text" id="medicineName" placeholder="薬の名前">
+<input type="text"
+id="medicineName"
+placeholder="薬の名前">
 
-<input type="text" id="medicineEffect" placeholder="効果、頻度">
+<input type="text"
+id="medicineEffect"
+placeholder="効果、頻度">
 
-<button onclick="addMedicine()">追加</button>
+<button onclick="addMedicine()">
+追加
+</button>
 
 <input type="text"
 id="searchBox"
@@ -101,11 +98,51 @@ onkeyup="searchMedicine()">
 
 </table>
 
-<script>
+<script type="module">
+
+import { initializeApp }
+from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+deleteDoc,
+doc,
+onSnapshot
+}
+from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyC4jekFXVoYZS6lFPKrm_UDoLykGtlaXQs",
+authDomain: "shared-note-acb32.firebaseapp.com",
+projectId: "shared-note-acb32",
+storageBucket: "shared-note-acb32.firebasestorage.app",
+messagingSenderId: "104453033051",
+appId: "1:104453033051:web:9cc377df9b8a13b212437e"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
 
 let medicines = [];
 
-window.onload = function(){
+const password = "1511";
+
+const input =
+prompt("パスワードを入力");
+
+if(input !== password){
+
+alert("パスワードが違います");
+
+location.href =
+"https://google.com";
+
+}
 
 onSnapshot(
 collection(db, "medicines"),
@@ -127,22 +164,25 @@ displayMedicines();
 
 });
 
-};
+window.addMedicine =
+async function(){
 
-async function addMedicine(){
+const name =
+document.getElementById(
+"medicineName"
+).value;
 
-const name = document.getElementById("medicineName").value;
-const effect = document.getElementById("medicineEffect").value;
+const effect =
+document.getElementById(
+"medicineEffect"
+).value;
 
 if(name === "" || effect === ""){
+
 alert("入力してください");
+
 return;
 }
-
-medicines.push({
-name: name,
-effect: effect
-});
 
 await addDoc(
 collection(db, "medicines"),
@@ -152,30 +192,36 @@ effect: effect
 }
 );
 
-saveData();
+document.getElementById(
+"medicineName"
+).value = "";
 
-displayMedicines();
+document.getElementById(
+"medicineEffect"
+).value = "";
 
-document.getElementById("medicineName").value = "";
-document.getElementById("medicineEffect").value = "";
-}
+};
 
 function displayMedicines(){
 
-const tbody = document.querySelector("#medicineTable tbody");
+const tbody =
+document.querySelector(
+"#medicineTable tbody"
+);
 
 tbody.innerHTML = "";
 
-medicines.forEach((medicine, index) => {
+medicines.forEach((medicine) => {
 
-const row = document.createElement("tr");
+const row =
+document.createElement("tr");
 
 row.innerHTML = `
 <td>${medicine.name}</td>
 <td>${medicine.effect}</td>
 <td>
 <button class="deleteBtn"
-onclick="deleteMedicine(${index})">
+onclick="deleteMedicine('${medicine.id}')">
 削除
 </button>
 </td>
@@ -184,47 +230,57 @@ onclick="deleteMedicine(${index})">
 tbody.appendChild(row);
 
 });
+
 }
 
-function deleteMedicine(index){
+window.deleteMedicine =
+async function(id){
 
-const result = confirm("本当に削除しますか？");
+const result =
+confirm("本当に削除しますか？");
 
 if(result){
 
-medicines.splice(index, 1);
+await deleteDoc(
+doc(db, "medicines", id)
+);
 
-saveData();
-
-displayMedicines();
-}
 }
 
-function saveData(){
-localStorage.setItem("medicines",
-JSON.stringify(medicines));
-}
+};
 
-function searchMedicine(){
+window.searchMedicine =
+function(){
 
 const keyword =
-document.getElementById("searchBox")
+document.getElementById(
+"searchBox"
+)
 .value
 .toLowerCase();
 
 const rows =
-document.querySelectorAll("#medicineTable tbody tr");
+document.querySelectorAll(
+"#medicineTable tbody tr"
+);
 
 rows.forEach(row => {
 
 const name =
-row.cells[0].textContent.toLowerCase();
+row.cells[0]
+.textContent
+.toLowerCase();
 
 const effect =
-row.cells[1].textContent.toLowerCase();
+row.cells[1]
+.textContent
+.toLowerCase();
 
-if(name.includes(keyword)
-|| effect.includes(keyword)){
+if(
+name.includes(keyword)
+||
+effect.includes(keyword)
+){
 
 row.style.display = "";
 
@@ -235,41 +291,10 @@ row.style.display = "none";
 }
 
 });
-}
+
+};
 
 </script>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp }
-from
-"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
-import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-deleteDoc,
-doc,
-onSnapshot
-}
-from
-"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyC4jekFXVoYZS6lFPKrm_UDoLykGtlaXQs",
-    authDomain: "shared-note-acb32.firebaseapp.com",
-    projectId: "shared-note-acb32",
-    storageBucket: "shared-note-acb32.firebasestorage.app",
-    messagingSenderId: "104453033051",
-    appId: "1:104453033051:web:9cc377df9b8a13b212437e"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    
-</script>
 </body>
 </html>
