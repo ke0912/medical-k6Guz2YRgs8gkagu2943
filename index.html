@@ -273,7 +273,6 @@ document.getElementById(
 "searchBox"
 )
 .value
-.toLowerCase();
 
 const rows =
 document.querySelectorAll(
@@ -292,12 +291,10 @@ rows.forEach(row => {
 const name =
 row.cells[0]
 .textContent
-.toLowerCase();
 
 const effect =
 row.cells[1]
 .textContent
-.toLowerCase();
 
 if(
 name.includes(keyword)
