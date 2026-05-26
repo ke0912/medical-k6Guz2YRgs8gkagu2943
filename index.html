@@ -106,12 +106,27 @@ onkeyup="searchMedicine()">
 let medicines = [];
 
 window.onload = function(){
-const savedData = localStorage.getItem("medicines");
 
-if(savedData){
-medicines = JSON.parse(savedData);
+onSnapshot(
+collection(db, "medicines"),
+(snapshot) => {
+
+medicines = [];
+
+snapshot.forEach((docData) => {
+
+medicines.push({
+id: docData.id,
+name: docData.data().name,
+effect: docData.data().effect
+});
+
+});
+
 displayMedicines();
-}
+
+});
+
 };
 
 async function addMedicine(){
@@ -235,7 +250,8 @@ collection,
 addDoc,
 getDocs,
 deleteDoc,
-doc
+doc,
+onSnapshot
 }
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
