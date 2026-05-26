@@ -59,21 +59,6 @@ border: none;
 padding: 5px 10px;
 }
 
-#suggestions{
-background: white;
-border: 1px solid #ccc;
-}
-
-.suggestionItem{
-padding: 8px;
-cursor: pointer;
-border-bottom: 1px solid #eee;
-}
-
-.suggestionItem:hover{
-background: #f0f0f0;
-}
-
 </style>
 </head>
 
@@ -98,7 +83,6 @@ id="searchBox"
 placeholder="検索"
 onkeyup="searchMedicine()">
 
-<div id="suggestions"></div>
 <table id="medicineTable">
 
 <thead>
@@ -273,28 +257,24 @@ document.getElementById(
 "searchBox"
 )
 .value
+.toLowerCase();
 
 const rows =
 document.querySelectorAll(
 "#medicineTable tbody tr"
 );
 
-const suggestions =
-document.getElementById(
-"suggestions"
-);
-
-suggestions.innerHTML = "";
-
 rows.forEach(row => {
 
 const name =
 row.cells[0]
 .textContent
+.toLowerCase();
 
 const effect =
 row.cells[1]
 .textContent
+.toLowerCase();
 
 if(
 name.includes(keyword)
@@ -303,32 +283,6 @@ effect.includes(keyword)
 ){
 
 row.style.display = "";
-
-if(keyword !== ""){
-
-const div =
-document.createElement("div");
-
-div.className =
-"suggestionItem";
-
-div.textContent =
-row.cells[0].textContent;
-
-div.onclick = function(){
-
-document.getElementById(
-"searchBox"
-).value =
-row.cells[0].textContent;
-
-suggestions.innerHTML = "";
-
-};
-
-suggestions.appendChild(div);
-
-}
 
 }else{
 
