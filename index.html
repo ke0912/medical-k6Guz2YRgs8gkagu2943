@@ -249,15 +249,30 @@ doc(db, "medicines", id)
 
 };
 
+function hiraToKata(str){
+
+return str.replace(
+/[\u3041-\u3096]/g,
+function(match){
+
+return String.fromCharCode(
+match.charCodeAt(0) + 0x60
+);
+
+}
+);
+
+}
+
 window.searchMedicine =
 function(){
 
 const keyword =
-document.getElementById(
-"searchBox"
-)
+hiraToKata(
+document.getElementById("searchBox")
 .value
-.toLowerCase();
+.toLowerCase()
+);
 
 const rows =
 document.querySelectorAll(
@@ -267,14 +282,18 @@ document.querySelectorAll(
 rows.forEach(row => {
 
 const name =
+hiraToKata(
 row.cells[0]
 .textContent
-.toLowerCase();
+.toLowerCase()
+);
 
 const effect =
+hiraToKata(
 row.cells[1]
 .textContent
-.toLowerCase();
+.toLowerCase()
+);
 
 if(
 name.includes(keyword)
