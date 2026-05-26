@@ -132,8 +132,28 @@ let medicines = [];
 
 const password = "1511";
 
-const input =
+let input =
 prompt("パスワードを入力");
+
+if(input == null){
+
+location.href =
+"https://google.com";
+
+}else{
+
+input = input.replace(
+/[０-９]/g,
+function(s){
+
+return String.fromCharCode(
+s.charCodeAt(0) - 65248
+);
+
+}
+);
+
+input = input.trim();
 
 if(input !== password){
 
@@ -143,6 +163,9 @@ location.href =
 "https://google.com";
 
 }
+
+}
+
 
 onSnapshot(
 collection(db, "medicines"),
