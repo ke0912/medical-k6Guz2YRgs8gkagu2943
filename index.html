@@ -142,18 +142,29 @@ location.href =
 
 }else{
 
-input = input.replace(
-/[０-９]/g,
-function(s){
+input = Array.from(input)
+.map(char => {
+
+const code =
+char.charCodeAt(0);
+
+if(
+code >= 65296
+&&
+code <= 65305
+){
 
 return String.fromCharCode(
-s.charCodeAt(0) - 65248
+code - 65248
 );
 
 }
-);
 
-input = input.trim();
+return char;
+
+})
+.join("")
+.trim();
 
 if(input !== password){
 
@@ -165,6 +176,7 @@ location.href =
 }
 
 }
+
 
 
 onSnapshot(
