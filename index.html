@@ -249,7 +249,7 @@ doc(db, "medicines", id)
 
 };
 
-function hiraToKata(str){
+window.hiraToKata = function(str){
 
 return str.replace(
 /[\u3041-\u3096]/g,
@@ -262,16 +262,15 @@ match.charCodeAt(0) + 0x60
 }
 );
 
-}
+};
 
 window.searchMedicine =
 function(){
 
 const keyword =
-hiraToKata(
+window.hiraToKata(
 document.getElementById("searchBox")
 .value
-.toLowerCase()
 );
 
 const rows =
@@ -282,17 +281,13 @@ document.querySelectorAll(
 rows.forEach(row => {
 
 const name =
-hiraToKata(
-row.cells[0]
-.textContent
-.toLowerCase()
+window.hiraToKata(
+row.cells[0].textContent
 );
 
 const effect =
-hiraToKata(
-row.cells[1]
-.textContent
-.toLowerCase()
+window.hiraToKata(
+row.cells[1].textContent
 );
 
 if(
@@ -310,6 +305,9 @@ row.style.display = "none";
 }
 
 });
+
+};
+
 
 };
 
