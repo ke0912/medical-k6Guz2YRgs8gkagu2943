@@ -132,19 +132,8 @@ let medicines = [];
 
 const password = "1511";
 
-let input =
+const input =
 prompt("パスワードを入力");
-
-input = input.replace(
-/[０-９]/g,
-function(s){
-
-return String.fromCharCode(
-s.charCodeAt(0) - 65248
-);
-
-}
-);
 
 if(input !== password){
 
@@ -154,13 +143,6 @@ location.href =
 "https://google.com";
 
 }
-
-
-
-
-
-
-
 
 onSnapshot(
 collection(db, "medicines"),
@@ -267,29 +249,15 @@ doc(db, "medicines", id)
 
 };
 
-window.hiraToKata = function(str){
-
-return str.replace(
-/[\u3041-\u3096]/g,
-function(match){
-
-return String.fromCharCode(
-match.charCodeAt(0) + 0x60
-);
-
-}
-);
-
-};
-
 window.searchMedicine =
 function(){
 
 const keyword =
-window.hiraToKata(
-document.getElementById("searchBox")
+document.getElementById(
+"searchBox"
+)
 .value
-);
+.toLowerCase();
 
 const rows =
 document.querySelectorAll(
@@ -299,14 +267,14 @@ document.querySelectorAll(
 rows.forEach(row => {
 
 const name =
-window.hiraToKata(
-row.cells[0].textContent
-);
+row.cells[0]
+.textContent
+.toLowerCase();
 
 const effect =
-window.hiraToKata(
-row.cells[1].textContent
-);
+row.cells[1]
+.textContent
+.toLowerCase();
 
 if(
 name.includes(keyword)
@@ -323,9 +291,6 @@ row.style.display = "none";
 }
 
 });
-
-};
-
 
 };
 
